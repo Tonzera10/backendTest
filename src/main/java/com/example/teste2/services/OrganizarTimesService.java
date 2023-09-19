@@ -1,11 +1,5 @@
 package com.example.teste2.services;
 
-import com.example.teste2.dto.JogadorDTO;
-import com.example.teste2.entities.JogadorEntity;
-import com.example.teste2.entities.TimesEntity;
-import com.example.teste2.repositories.JogadorRepository;
-import com.example.teste2.repositories.TimesRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -13,16 +7,15 @@ import java.util.*;
 @Service
 public class OrganizarTimesService {
 
-    @Autowired
-    static TimesRepository timesRepository;
-    @Autowired
-    JogadorRepository jogadorRepository;
+    public List<String> jogadoresLista = new ArrayList<>();
 
-    public static List<JogadorDTO> jogadores = new ArrayList<>();
-
-    public static void criarJogador(JogadorDTO jogador) {
-        jogadores.add(jogador);
+    public  void criarJogador(String jogador) {
+        jogadoresLista.add(jogador);
     };
+
+    public List<String> getJogadores() {
+        return jogadoresLista;
+    }
 
     public static Map<String, List<String>> organizarTimes(List<String> jogadores) {
         Map<String, List<String>> times = new HashMap<>();
@@ -32,13 +25,11 @@ public class OrganizarTimesService {
             String sobrenome = nomeSobrenome[nomeSobrenome.length - 1];
             String primeiraLetraSobrenome = sobrenome.substring(0, 1);
             String chaveTimeAlternativo = "T" + times.size() +1;
-
             if (!times.containsKey(primeiraLetraSobrenome)) {
                 times.put(primeiraLetraSobrenome, new ArrayList<>());
             }
 
             List<String> time = times.get(primeiraLetraSobrenome);
-
             boolean jogadorRepetido = false;
             for (String jogadorTime : time) {
                 String sobrenomeTime = jogadorTime.split(" ")[1];
@@ -48,17 +39,33 @@ public class OrganizarTimesService {
                     break;
                 }
             }
-
             List<String> timeAlternativo = times.get(chaveTimeAlternativo);
 
             if (!jogadorRepetido) {
-                time.add(jogador);
+                time.add(formataNome(jogador));
             } else {
-                timeAlternativo.add(jogador);
+                timeAlternativo.add(formataNome(jogador));
             }
         }
-
         return times;
+    }
+
+    public void limparJogadores(){
+        jogadoresLista.clear();
+    }
+
+    public static String formataNome(String nome) {
+        int start = nome.indexOf("\"nome\": \"") + 9; // Início do nome
+        int end = nome.lastIndexOf("\""); // Fim da string
+
+        if (start != -1 && end != -1 && start < end) {
+            String nomeSobrenome = nome.substring(start, end);
+            System.out.println("Nome e sobrenome: " + nomeSobrenome);
+            return nomeSobrenome;
+        } else {
+            System.out.println("Não foi possível extrair o nome e sobrenome.");
+        }
+        return null;
     }
 };
 
