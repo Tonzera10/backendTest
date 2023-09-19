@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -15,12 +15,13 @@ public class TimesEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idtimes", nullable = true)
+    @Column(name = "id", nullable = true)
     private Long id;
 
-    @Column(name = "nometimes", length = 50, nullable = true)
+    @Column(name = "nome", length = 50, nullable = true)
     private String nome;
 
     @OneToMany(mappedBy = "time", cascade = CascadeType.ALL)
-    private List<JogadorEntity> jogadores = new ArrayList<>();
+    public List<JogadorEntity> jogadores = Arrays.asList();
+
 }

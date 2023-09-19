@@ -6,13 +6,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.example.teste2.services.OrganizarTimesService;
 import com.example.teste2.util.OrganizarTimesUtil;
 import org.junit.jupiter.api.Test;
 public class AceitacaoTest {
 
     @Test
     public void testOrganizarTimes() {
-        var solucao = new OrganizarTimesUtil();
+        var solucao = new OrganizarTimesService();
 
 
         // Caso de teste 1: Nenhum jogador
